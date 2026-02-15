@@ -4,6 +4,7 @@ from PIL import Image
 import io
 
 app = Flask(__name__)
+app.config["MAX_CONTENT_LENGTH"] = 10 * 1024 * 1024
 
 
 @app.route("/")
