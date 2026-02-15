@@ -24,7 +24,6 @@ def compress():
         img = Image.open(file).convert("RGB")
     except Exception:
         return "Invalid image file"
-
     target_kb = request.form.get("target_kb")
     width = request.form.get("width")
     height = request.form.get("height")
