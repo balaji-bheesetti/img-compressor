@@ -68,3 +68,7 @@ def compress():
         final_size=final_size_kb,
         filename="compressed_" + file.filename,
     )
+
+
+if __name__ == "__main__":
+    app.run()
