@@ -4,43 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home page</title>
-    <style>
-        h1{
-            color: rgb(153, 153, 235);
-        }
-        .drop-area {
-            width: 300px;
-            height: 150px;
-            border: 2px dashed #666;
-            border-radius: 10px;
-            text-align: center;
-            line-height: 150px;
-            margin-bottom: 15px;
-            cursor: pointer;
-        }
-        .drop-area.dragover {
-            background: #f0f0f0;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Free image compressor with no ads</h1>
+    <h1>Free image compressor</h1>
+    <h3>Resize and compress images for online forms in seconds.
+        <div class="intro-points">
+    <p>• Set exact KB size required by application forms</p>
+    <p>• Optional pixel resize (width/height)</p>
+    <p>• Image is processed instantly and not stored</p>
+</div>
+
+</h3>
     <form method="post" action="compress" enctype="multipart/form-data">
         <div class="drop-area" id="drop-area">
             Drag & Drop Image Here
         </div>
         <input type="file" name="image" id="fileInput" required hidden>
-        <!-- <label>Choose image</label>
-        <input type="file" name="image" required> <br> <br> -->
-
-        <label for="kb">Size in KB</label>
-        <input type="number" name="target_kb" id="kb"> <br> <br>
-
-        Pixels: <br>
+        <div>
+            <label for="kb">Size in KB</label>
+            <input type="number" name="target_kb" id="kb"> 
+        </div> 
+        <div>
+        <p>Pixels:</p>
         <label for="width">Width</label>
-        <input type="number" name="width" id="width" placeholder="optional"> <br>
+        <input type="number" name="width" id="width" placeholder="optional">
         <label for="height">Height</label>
-        <input type="number" name="height" id="height" placeholder="optional"> <br> <br>
+        <input type="number" name="height" id="height" placeholder="optional"> 
+        </div>
 
         <button type="submit">Compress</button>
     </form>
@@ -61,34 +52,78 @@
         </a>
 
     {% endif %}
+    <section class="features">
+    <div class="feature">
+        <h4>Accurate Size Control</h4>
+        <p>Set exact KB size and pixel dimensions required by online application forms.</p>
+    </div>
+
+    <div class="feature">
+        <h4>Smart Compression</h4>
+        <p>Image quality is adjusted automatically to reach the required file size.</p>
+    </div>
+
+    <div class="feature">
+        <h4>Fast Processing</h4>
+        <p>Upload, compress, and download your image within seconds.</p>
+    </div>
+
+    <div class="feature">
+        <h4>Privacy Friendly</h4>
+        <p>Your images are processed instantly and are not stored on the server.</p>
+    </div>
+
+    <div class="feature">
+        <h4>Supports JPG & PNG</h4>
+        <p>Upload common formats and get a compressed JPEG ready for submission.</p>
+    </div>
+
+    <div class="feature">
+        <h4>Free to Use</h4>
+        <p>No login, no watermark, and no installation required.</p>
+    </div>
+    </section>
+
+
+
+    <footer>
+        <p>Free Image Compressor for online forms and applications.</p>
+        <p>© 2026 Image Tool</p>
+    </footer>  
+
 
 </body>
 <script>
-const dropArea = document.getElementById("drop-area");
-const fileInput = document.getElementById("fileInput");
+    const dropArea = document.getElementById("drop-area");
+    const fileInput = document.getElementById("fileInput");
 
-dropArea.addEventListener("click", () => {
-    fileInput.click();
-});
+    dropArea.addEventListener("click", () => {
+        fileInput.click();
+    });
 
-dropArea.addEventListener("dragover", (e) => {
-    e.preventDefault();
-    dropArea.classList.add("dragover");
-});
+    dropArea.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        dropArea.classList.add("dragover");
+    });
 
-dropArea.addEventListener("dragleave", () => {
-    dropArea.classList.remove("dragover");
-});
+    dropArea.addEventListener("dragleave", () => {
+        dropArea.classList.remove("dragover");
+    });
 
-dropArea.addEventListener("drop", (e) => {
-    e.preventDefault();
-    dropArea.classList.remove("dragover");
+    dropArea.addEventListener("drop", (e) => {
+        e.preventDefault();
+        dropArea.classList.remove("dragover");
 
-    const file = e.dataTransfer.files[0];
-    fileInput.files = e.dataTransfer.files;
+        if (e.dataTransfer.files.length > 0){
+            fileInput.files = e.dataTransfer.files;
+            dropArea.textContent = e.dataTransfer.files[0].name;
+        }
+    });
 
-    dropArea.textContent = file.name;
-});
+    fileInput.addEventListener("change", () => {
+        if (fileInput.files.length > 0){
+            dropArea.textContent = fileInput.files[0].name;
+        }
+    });
 </script>
-
 </html>
