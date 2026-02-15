@@ -9,15 +9,13 @@
 </head>
 <body>
     <h1>Free image compressor</h1>
-    <h3>Resize and compress images for online forms in seconds.
-        <div class="intro-points">
-    <p>• Set exact KB size required by application forms</p>
-    <p>• Optional pixel resize (width/height)</p>
-    <p>• Image is processed instantly and not stored</p>
-</div>
-
-</h3>
-    <form method="post" action="compress" enctype="multipart/form-data">
+    <h3>Resize and compress images for online forms in seconds.</h3>
+    <div class="intro-points">
+        <p>• Set exact KB size required by application forms</p>
+        <p>• Optional pixel resize (width/height)</p>
+        <p>• Image is processed instantly and not stored</p>
+    </div>
+    <form method="post" action="/compress" enctype="multipart/form-data">
         <div class="drop-area" id="drop-area">
             Drag & Drop Image Here
         </div>
@@ -47,10 +45,12 @@
 
         <br><br>
 
-        <a download="{{ filename }}"
+        <a class="download-btn"
+        download="{{ filename }}"
         href="data:image/jpeg;base64,{{ preview_image }}">
-        <button>Download</button>
+        Download
         </a>
+
 
     {% endif %}
     <section class="features">
