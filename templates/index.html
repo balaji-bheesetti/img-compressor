@@ -34,25 +34,22 @@
 
         <button type="submit">Compress</button>
     </form>
-    {% if preview_image %}
-        <hr>
+    
+    {% if show_download %}
+    <hr>
 
-        <h3>Preview</h3>
-        <p>Final size: {{ final_size }} KB</p>
+    <p style="text-align:center;">
+    Final size: <b>{{ final_size }} KB</b>
+    </p>
 
-        <img src="data:image/jpeg;base64,{{ preview_image }}" 
-            style="max-width:300px; border:1px solid black;">
-
-        <br><br>
-
-        <a class="download-btn"
-        download="{{ filename }}"
-        href="data:image/jpeg;base64,{{ preview_image }}">
-        Download
+    <div style="text-align:center;">
+        <a href="/download">
+            <button type="button">Download Image</button>
         </a>
-
-
+    </div>
     {% endif %}
+
+
     <section class="features">
     <div class="feature">
         <h4>Accurate Size Control</h4>

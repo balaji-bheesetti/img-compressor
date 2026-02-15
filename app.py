@@ -1,10 +1,13 @@
 from flask import Flask, render_template, request, send_file
-import base64
 from PIL import Image
 import io
 
 app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = 10 * 1024 * 1024
+
+compressed_buffer = None
+compressed_name = None
+final_kb = None
 
 
 @app.route("/")
@@ -14,6 +17,7 @@ def home():
 
 @app.route("/compress", methods=["POST"])
 def compress():
+    global compressed_buffer, compressed_name, final_kb
     file = request.files["image"]
 
     try:
@@ -61,13 +65,23 @@ def compress():
         img.save(buffer, format="JPEG", quality=70, optimize=True)
     final_size_kb = round(buffer.tell() / 1024, 2)
     buffer.seek(0)
-    img_base64 = base64.b64encode(buffer.getvalue()).decode("utf-8")
+    compressed_buffer = buffer
+    compressed_name = "compressed_" + file.filename
 
-    return render_template(
-        "index.html",
-        preview_image=img_base64,
-        final_size=final_size_kb,
-        filename="compressed_" + file.filename,
+    return render_template("index.html", show_download=True, final_size=final_size_kb)
+
+
+@app.route("/download")
+def download():
+    global compressed_buffer, compressed_name
+    if not compressed_buffer:
+        return "no file"
+    compressed_buffer.seek(0)
+    return send_file(
+        compressed_buffer,
+        as_attachment=True,
+        download_name=compressed_name,
+        mimetype="image/jpeg",
     )
 
 
