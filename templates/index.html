@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home page</title>
+    <style>
+        h1{
+            color: rgb(153, 153, 235);
+        }
+        .drop-area {
+            width: 300px;
+            height: 150px;
+            border: 2px dashed #666;
+            border-radius: 10px;
+            text-align: center;
+            line-height: 150px;
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+        .drop-area.dragover {
+            background: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Free image compressor with no ads</h1>
+    <form method="post" action="compress" enctype="multipart/form-data">
+        <div class="drop-area" id="drop-area">
+            Drag & Drop Image Here
+        </div>
+        <input type="file" name="image" id="fileInput" required hidden>
+        <!-- <label>Choose image</label>
+        <input type="file" name="image" required> <br> <br> -->
+
+        <label for="kb">Size in KB</label>
+        <input type="number" name="target_kb" id="kb"> <br> <br>
+
+        Pixels: <br>
+        <label for="width">Width</label>
+        <input type="number" name="width" id="width" placeholder="optional"> <br>
+        <label for="height">Height</label>
+        <input type="number" name="height" id="height" placeholder="optional"> <br> <br>
+
+        <button type="submit">Compress</button>
+    </form>
+    {% if preview_image %}
+        <hr>
+
+        <h3>Preview</h3>
+        <p>Final size: {{ final_size }} KB</p>
+
+        <img src="data:image/jpeg;base64,{{ preview_image }}" 
+            style="max-width:300px; border:1px solid black;">
+
+        <br><br>
+
+        <a download="{{ filename }}"
+        href="data:image/jpeg;base64,{{ preview_image }}">
+        <button>Download</button>
+        </a>
+
+    {% endif %}
+
+</body>
+<script>
+const dropArea = document.getElementById("drop-area");
+const fileInput = document.getElementById("fileInput");
+
+dropArea.addEventListener("click", () => {
+    fileInput.click();
+});
+
+dropArea.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    dropArea.classList.add("dragover");
+});
+
+dropArea.addEventListener("dragleave", () => {
+    dropArea.classList.remove("dragover");
+});
+
+dropArea.addEventListener("drop", (e) => {
+    e.preventDefault();
+    dropArea.classList.remove("dragover");
+
+    const file = e.dataTransfer.files[0];
+    fileInput.files = e.dataTransfer.files;
+
+    dropArea.textContent = file.name;
+});
+</script>
+
+</html>
